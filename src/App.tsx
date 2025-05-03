@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { stories } from "../constants/stories";
+import { stories } from "./constants/stories";
 import StoryList from "./components/StoryList";
 import StoryViewer from "./components/StoryViewer";
 import "./App.css";
@@ -21,11 +21,7 @@ const App: React.FC = () => {
     <div className="app">
       <StoryList stories={stories} onStoryClick={handleStoryClick} />
       {selectedStoryIndex !== null && (
-        <StoryViewer
-          stories={stories}
-          initialIndex={selectedStoryIndex}
-          onClose={handleClose}
-        />
+        <StoryViewer stories={stories} initialIndex={0} onClose={handleClose} />
       )}
     </div>
   );

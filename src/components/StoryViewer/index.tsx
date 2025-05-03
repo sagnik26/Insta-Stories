@@ -32,20 +32,26 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
       setProgress(0);
     }
   }, [currentIndex]);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          goToNextStory();
-          return 0;
-        }
-        return prevProgress + (100 / 5000) * 100; // 5000ms = 5 seconds
-      });
-    }, 100);
+    let interval: number;
+    if (!isLoading) {
+      interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          if (prevProgress >= 100) {
+            goToNextStory();
+            return 0;
+          }
+          return prevProgress + (100 / 5000) * 100; // 5000ms = 5 seconds
+        });
+      }, 100);
+    }
 
-    return () => clearInterval(interval);
-  }, [currentIndex, goToNextStory]);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [currentIndex, goToNextStory, isLoading]);
 
   const handleImageLoad = () => {
     setIsLoading(false);
