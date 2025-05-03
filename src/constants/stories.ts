@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { Story } from "../src/types/index";
+import { Story } from "../types";
 
 export const stories: Story[] = [
   {

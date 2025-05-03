@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Story } from "../../types";
+import { StoryViewerProps } from "../../types";
 import styles from "./StoryViewer.module.css";
-
-interface StoryViewerProps {
-  stories: Story[];
-  initialIndex: number;
-  onClose: () => void;
-}
 
 const StoryViewer: React.FC<StoryViewerProps> = ({
   stories,
@@ -41,7 +35,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
             goToNextStory();
             return 0;
           }
-          return prevProgress + (100 / 5000) * 100; // 5000ms = 5 seconds
+          return prevProgress + (100 / 5000) * 100;
         });
       }, 100);
     }
