@@ -11,6 +11,23 @@ export interface StoryListProps {
 
 export interface StoryViewerProps {
   stories: Story[];
-  initialIndex: number;
+  selectedIndex: number;
   onClose: () => void;
+}
+
+export interface PostProps {
+  username: string;
+  userAvatar: string;
+  imageUrl: string;
+  likes: number;
+  caption: string;
+}
+
+export interface Post {
+  id: number;
+  username: string;
+  userAvatar: string;
+  imageUrl: string;
+  likes: number;
+  caption: string;
 }

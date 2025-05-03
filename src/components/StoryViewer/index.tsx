@@ -4,10 +4,10 @@ import styles from "./StoryViewer.module.css";
 
 const StoryViewer: React.FC<StoryViewerProps> = ({
   stories,
-  initialIndex,
+  selectedIndex,
   onClose,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
@@ -101,7 +101,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
           alt={`Story by ${stories[currentIndex].username}`}
           onLoad={handleImageLoad}
         />
-        <div className={styles.username}>{stories[currentIndex].username}</div>
+        <div className={styles.username}>{stories[selectedIndex].username}</div>
       </div>
     </div>
   );

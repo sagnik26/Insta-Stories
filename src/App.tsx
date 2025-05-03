@@ -3,6 +3,9 @@ import { stories } from "./constants/stories";
 import StoryList from "./components/StoryList";
 import StoryViewer from "./components/StoryViewer";
 import "./App.css";
+import { posts } from "./constants/posts";
+import Post from "./components/Post";
+import Header from "./components/Header";
 
 const App: React.FC = () => {
   const [selectedStoryIndex, setSelectedStoryIndex] = useState<number | null>(
@@ -19,10 +22,20 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
+      <Header />
       <StoryList stories={stories} onStoryClick={handleStoryClick} />
       {selectedStoryIndex !== null && (
-        <StoryViewer stories={stories} initialIndex={0} onClose={handleClose} />
+        <StoryViewer
+          stories={stories}
+          selectedIndex={selectedStoryIndex}
+          onClose={handleClose}
+        />
       )}
+      <div className="posts">
+        {posts.map((post) => (
+          <Post key={post.id} {...post} />
+        ))}
+      </div>
     </div>
   );
 };
