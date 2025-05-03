@@ -1,0 +1,83 @@
+.storyListContainer {
+  background-color: #fff;
+  border-bottom: 1px solid #dbdbdb;
+  width: 100%;
+  position: relative;
+}
+
+.storyList {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 8px;
+  gap: 15px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: 100%;
+}
+
+.storyList::-webkit-scrollbar {
+  display: none;
+}
+
+.storyThumbnail {
+  flex: 0 0 auto;
+  width: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.storyRing {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  );
+  padding: 2px;
+  margin-bottom: 5px;
+}
+
+.storyImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.username {
+  font-size: 11px;
+  color: #262626;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .storyListContainer {
+    margin-top: 0;
+  }
+
+  .storyList {
+    padding: 8px 4px;
+  }
+
+  .storyThumbnail {
+    width: 60px;
+  }
+
+  .storyRing {
+    width: 56px;
+    height: 56px;
+  }
+}

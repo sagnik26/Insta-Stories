@@ -1,8 +1,10 @@
 #root {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* padding: 2rem; */
+  /* text-align: center; */
+  overflow: hidden;
 }
 
 .logo {
@@ -39,4 +41,27 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.app {
+  /* padding: 20px 0; */
+  /* max-width: 600px; */
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 10px 0;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
 }

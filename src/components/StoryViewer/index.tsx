@@ -1,0 +1,110 @@
+import React, { useEffect, useState, useCallback } from "react";
+import { Story } from "../../types";
+import styles from "./StoryViewer.module.css";
+
+interface StoryViewerProps {
+  stories: Story[];
+  initialIndex: number;
+  onClose: () => void;
+}
+
+const StoryViewer: React.FC<StoryViewerProps> = ({
+  stories,
+  initialIndex,
+  onClose,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  const goToNextStory = useCallback(() => {
+    if (currentIndex < stories.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setProgress(0);
+    } else {
+      onClose();
+    }
+  }, [currentIndex, stories.length, onClose]);
+
+  const goToPreviousStory = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setProgress(0);
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          goToNextStory();
+          return 0;
+        }
+        return prevProgress + (100 / 5000) * 100; // 5000ms = 5 seconds
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, goToNextStory]);
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    const { clientX } = e;
+    const { innerWidth } = window;
+
+    if (clientX < innerWidth / 2) {
+      goToPreviousStory();
+    } else {
+      goToNextStory();
+    }
+  };
+
+  return (
+    <div className={styles.storyViewer}>
+      <div className={styles.progressContainer}>
+        {stories.map((_, index) => (
+          <div
+            key={index}
+            className={styles.progressBar}
+            style={{
+              width: `${100 / stories.length}%`,
+            }}
+          >
+            <div
+              className={styles.progressFill}
+              style={{
+                width: `${
+                  index === currentIndex
+                    ? progress
+                    : index < currentIndex
+                    ? 100
+                    : 0
+                }%`,
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      <button className={styles.closeButton} onClick={onClose}>
+        ×
+      </button>
+
+      {isLoading && <div className={styles.loader}>Loading...</div>}
+
+      <div className={styles.storyContent} onClick={handleClick}>
+        <img
+          src={stories[currentIndex].imageUrl}
+          alt={`Story by ${stories[currentIndex].username}`}
+          onLoad={handleImageLoad}
+        />
+        <div className={styles.username}>{stories[currentIndex].username}</div>
+      </div>
+    </div>
+  );
+};
+
+export default StoryViewer;
