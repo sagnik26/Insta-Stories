@@ -4,6 +4,8 @@ This is a simple webapp which demonstrates the instagram story feature.
 
 [*** **It is created for mobile view only for now, please ignore the desktop view, It will be updated in future** ]
 
+![Insta Stories](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8eqye8yhichd1gtflhd2.png)
+
 ## Deployed URL
 
 [https://myinstastories.netlify.app/](https://myinstastories.netlify.app/)
