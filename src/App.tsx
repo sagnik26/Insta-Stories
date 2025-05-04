@@ -31,7 +31,7 @@ const App: React.FC = () => {
           onClose={handleClose}
         />
       )}
-      <div className="posts">
+      <div className="posts" data-testid="posts">
         {posts.map((post) => (
           <Post key={post.id} {...post} />
         ))}

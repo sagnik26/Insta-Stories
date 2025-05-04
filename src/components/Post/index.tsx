@@ -29,7 +29,7 @@ const Post: React.FC<PostProps> = ({
     <div className={styles.post}>
       {/* Loader */}
       {!isFullyLoaded && (
-        <div className={styles.skeleton}>
+        <div className={styles.skeleton} data-testid="skeletonLoader">
           <div className={styles.skeletonHeader}>
             <div className={styles.skeletonAvatar}></div>
             <div className={styles.skeletonUsername}></div>

@@ -17,7 +17,7 @@ const StoryList: React.FC<StoryListProps> = ({ stories, onStoryClick }) => {
   const isImageLoaded = (storyId: string) => loadedImages[storyId];
 
   return (
-    <div className={styles.storyListContainer}>
+    <div className={styles.storyListContainer} data-testid="storyListContainer">
       <div className={styles.storyList}>
         {stories.map((story, index) => (
           <div
@@ -25,6 +25,7 @@ const StoryList: React.FC<StoryListProps> = ({ stories, onStoryClick }) => {
             className={`${styles.storyThumbnail} ${
               isImageLoaded(story.id) ? styles.loaded : ""
             }`}
+            data-testid={`storyThumbnail-${index}`}
             onClick={() => onStoryClick(index)}
           >
             <div className={styles.storyRing}>

@@ -27,7 +27,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
     }
   }, [currentIndex]);
   useEffect(() => {
-    let interval: number;
+    let interval: NodeJS.Timeout;
     if (!isLoading) {
       interval = setInterval(() => {
         setProgress((prevProgress) => {
@@ -63,12 +63,13 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
   };
 
   return (
-    <div className={styles.storyViewer}>
+    <div className={styles.storyViewer} data-testid="storyViewer">
       <div className={styles.progressContainer}>
         {stories.map((_, index) => (
           <div
             key={index}
             className={styles.progressBar}
+            data-testid={`progressBar-${index}`}
             style={{
               width: `${100 / stories.length}%`,
             }}
@@ -89,19 +90,29 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
         ))}
       </div>
 
-      <button className={styles.closeButton} onClick={onClose}>
+      <button
+        className={styles.closeButton}
+        onClick={onClose}
+        data-testid="closeButton"
+      >
         ×
       </button>
 
       {isLoading && <div className={styles.loader}>Loading...</div>}
 
-      <div className={styles.storyContent} onClick={handleClick}>
+      <div
+        className={styles.storyContent}
+        data-testid="storyContent"
+        onClick={handleClick}
+      >
         <img
           src={stories[currentIndex].imageUrl}
           alt={`Story by ${stories[currentIndex].username}`}
           onLoad={handleImageLoad}
         />
-        <div className={styles.username}>{stories[selectedIndex].username}</div>
+        <div className={styles.username} data-testid="storyUsername">
+          {stories[selectedIndex].username}
+        </div>
       </div>
     </div>
   );
