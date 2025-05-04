@@ -2,7 +2,7 @@
 
 This is a simple webapp which demonstrates the instagram story feature.
 
-[ **It is created for mobile view only for now, please ignore the desktop view, It will be updated in future** ]
+[*** **It is created for mobile view only for now, please ignore the desktop view, It will be updated in future** ]
 
 ## Deployed URL
 
