@@ -7,25 +7,90 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
   selectedIndex,
   onClose,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(selectedIndex);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
+  const groupedStories = stories.reduce((acc, story) => {
+    if (!acc[story.username]) {
+      acc[story.username] = [];
+    }
+    acc[story.username].push(story);
+    return acc;
+  }, {} as Record<string, typeof stories>);
+
+  const usernames = Object.keys(groupedStories);
+  const currentUsername = stories[currentIndex].username;
+  const currentUserStories = groupedStories[currentUsername];
+  const currentUserStoryIndex = currentUserStories.findIndex(
+    (story) => story.id === stories[currentIndex].id
+  );
+
   const goToNextStory = useCallback(() => {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    if (currentUserStoryIndex < currentUserStories.length - 1) {
+      // Move to next story of current user
+      const nextStoryIndex = stories.findIndex(
+        (story) => story.id === currentUserStories[currentUserStoryIndex + 1].id
+      );
+      setCurrentIndex(nextStoryIndex);
       setProgress(0);
     } else {
-      onClose();
+      // Move to first story of next user
+      const currentUsernameIndex = usernames.indexOf(currentUsername);
+      if (currentUsernameIndex < usernames.length - 1) {
+        const nextUsername = usernames[currentUsernameIndex + 1];
+        const nextStoryIndex = stories.findIndex(
+          (story) => story.id === groupedStories[nextUsername][0].id
+        );
+        setCurrentIndex(nextStoryIndex);
+        setProgress(0);
+      } else {
+        // Last story of last user, close the viewer
+        onClose();
+      }
     }
-  }, [currentIndex, stories.length, onClose]);
+  }, [
+    currentIndex,
+    stories,
+    currentUserStories,
+    currentUserStoryIndex,
+    usernames,
+    currentUsername,
+    groupedStories,
+    onClose,
+  ]);
 
   const goToPreviousStory = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+    if (currentUserStoryIndex > 0) {
+      // Move to previous story of current user
+      const prevStoryIndex = stories.findIndex(
+        (story) => story.id === currentUserStories[currentUserStoryIndex - 1].id
+      );
+      setCurrentIndex(prevStoryIndex);
       setProgress(0);
+    } else {
+      // Move to last story of previous user
+      const currentUsernameIndex = usernames.indexOf(currentUsername);
+      if (currentUsernameIndex > 0) {
+        const prevUsername = usernames[currentUsernameIndex - 1];
+        const prevUserStories = groupedStories[prevUsername];
+        const prevStoryIndex = stories.findIndex(
+          (story) => story.id === prevUserStories[prevUserStories.length - 1].id
+        );
+        setCurrentIndex(prevStoryIndex);
+        setProgress(0);
+      }
     }
-  }, [currentIndex]);
+  }, [
+    currentIndex,
+    stories,
+    currentUserStories,
+    currentUserStoryIndex,
+    usernames,
+    currentUsername,
+    groupedStories,
+  ]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (!isLoading) {
@@ -65,22 +130,22 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
   return (
     <div className={styles.storyViewer} data-testid="storyViewer">
       <div className={styles.progressContainer}>
-        {stories.map((_, index) => (
+        {currentUserStories.map((_, index) => (
           <div
             key={index}
             className={styles.progressBar}
             data-testid={`progressBar-${index}`}
             style={{
-              width: `${100 / stories.length}%`,
+              width: `${100 / currentUserStories.length}%`,
             }}
           >
             <div
               className={styles.progressFill}
               style={{
                 width: `${
-                  index === currentIndex
+                  index === currentUserStoryIndex
                     ? progress
-                    : index < currentIndex
+                    : index < currentUserStoryIndex
                     ? 100
                     : 0
                 }%`,
@@ -111,7 +176,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({
           onLoad={handleImageLoad}
         />
         <div className={styles.username} data-testid="storyUsername">
-          {stories[selectedIndex].username}
+          {stories[currentIndex].username}
         </div>
       </div>
     </div>

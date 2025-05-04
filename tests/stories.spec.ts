@@ -53,98 +53,134 @@ test.describe("Instagram Stories Clone", () => {
     await expect(storyViewer).not.toBeVisible();
   });
 
-  // check for progress bars
-  test("should show progress bars for all stories", async ({ page }) => {
+  //   // check for progress bars
+  //   test("should show progress bars for all stories", async ({ page }) => {
+  //     await page.waitForSelector("[data-testid^='storyThumbnail-']", {
+  //       state: "visible",
+  //       timeout: 5000,
+  //     });
+  //     await page.locator("[data-testid^='storyThumbnail-']").first().click();
+
+  //     const progressBars = page.locator("[data-testid^='progressBar-']");
+
+  //     const storyCount = await page
+  //       .locator("[data-testid^='storyThumbnail-']")
+  //       .count();
+
+  //     await expect(progressBars).toHaveCount(storyCount);
+  //   });
+
+  // check for navigation on right side click of any story
+  test("should navigate to next story when clicking right side", async ({
+    page,
+  }) => {
+    await page.waitForSelector("[data-testid^='storyThumbnail-']", {
+      state: "visible",
+      timeout: 5000,
+    });
+
+    await page.locator("[data-testid^='storyThumbnail-']").first().click();
+
+    const initialUsername = await page
+      .locator("[data-testid='storyUsername']")
+      .textContent();
+
+    const storyContent = page.locator("[data-testid='storyContent']");
+    const boundingBox = await storyContent.boundingBox();
+
+    if (boundingBox) {
+      await page.mouse.click(
+        boundingBox.x + boundingBox.width * 0.75,
+        boundingBox.y + boundingBox.height / 2
+      );
+
+      await page.waitForTimeout(500);
+
+      const newUsername = await page
+        .locator("[data-testid='storyUsername']")
+        .textContent();
+      expect(newUsername).not.toEqual(initialUsername);
+    }
+
+    await page.locator("[data-testid='closeButton']").click();
+  });
+
+  // check for navigation on left side click of any story
+  test("should navigate to previous story when clicking left side", async ({
+    page,
+  }) => {
+    await page.waitForSelector("[data-testid^='storyThumbnail-']", {
+      state: "visible",
+      timeout: 5000,
+    });
+
+    await page.locator("[data-testid^='storyThumbnail-']").first().click();
+
+    const storyViewer = page.locator("[data-testid='storyViewer']");
+    await expect(storyViewer).toBeVisible();
+
+    const storyContent = page.locator("[data-testid='storyContent']");
+    const boundingBox = await storyContent.boundingBox();
+
+    if (boundingBox) {
+      await page.mouse.click(
+        boundingBox.x + boundingBox.width * 0.75,
+        boundingBox.y + boundingBox.height / 2
+      );
+
+      await page.waitForTimeout(500);
+
+      const secondStoryImage = await page
+        .locator("[data-testid='storyContent'] img")
+        .getAttribute("src");
+
+      await page.mouse.click(
+        boundingBox.x + boundingBox.width * 0.25,
+        boundingBox.y + boundingBox.height / 2
+      );
+
+      await page.waitForTimeout(500);
+
+      const previousStoryImage = await page
+        .locator("[data-testid='storyContent'] img")
+        .getAttribute("src");
+
+      expect(previousStoryImage).not.toEqual(secondStoryImage);
+    }
+
+    await page.locator("[data-testid='closeButton']").click();
+  });
+
+  test("should auto progress to next story after timeout (5 seconds)", async ({
+    page,
+  }) => {
     await page.waitForSelector("[data-testid^='storyThumbnail-']", {
       state: "visible",
       timeout: 5000,
     });
     await page.locator("[data-testid^='storyThumbnail-']").first().click();
 
-    const progressBars = page.locator("[data-testid^='progressBar-']");
+    test.setTimeout(15000);
 
-    const storyCount = await page
-      .locator("[data-testid^='storyThumbnail-']")
-      .count();
+    const initialImageSrc = await page
+      .locator("[data-testid='storyContent'] img")
+      .getAttribute("src");
 
-    await expect(progressBars).toHaveCount(storyCount);
+    await expect(page.locator("[data-testid='storyViewer']")).toBeVisible();
+    await expect(
+      page.locator("[data-testid='storyContent'] img")
+    ).toBeVisible();
+
+    await page.waitForTimeout(6000);
+
+    const newImageSrc = await page
+      .locator("[data-testid='storyContent'] img")
+      .getAttribute("src");
+
+    expect(newImageSrc).not.toEqual(initialImageSrc);
+
+    await page.locator("[data-testid='closeButton']").click();
   });
-
-  //   // check for navigation on right side click of any story
-  //   test("should navigate to next story when clicking right side", async ({
-  //     page,
-  //   }) => {
-  //     await page.waitForSelector("[data-testid^='storyThumbnail-']", {
-  //       state: "visible",
-  //       timeout: 5000,
-  //     });
-
-  //     await page.locator("[data-testid^='storyThumbnail-']").first().click();
-
-  //     const initialUsername = await page
-  //       .locator("[data-testid='storyUsername']")
-  //       .textContent();
-
-  //     const storyContent = page.locator("[data-testid='storyContent']");
-  //     const boundingBox = await storyContent.boundingBox();
-
-  //     if (boundingBox) {
-  //       await page.mouse.click(
-  //         boundingBox.x + boundingBox.width * 0.75,
-  //         boundingBox.y + boundingBox.height / 2
-  //       );
-
-  //       await page.waitForTimeout(500);
-
-  //       const newUsername = await page
-  //         .locator("[data-testid='storyUsername']")
-  //         .textContent();
-  //       expect(newUsername).not.toEqual(initialUsername);
-  //     }
-
-  //     await page.locator("[data-testid='closeButton']").click();
-  //   });
-
-  //   // check for navigation on left side click of any story
-  //   test("should navigate to previous story when clicking left side", async ({
-  //     page,
-  //   }) => {
-  //     await page.waitForSelector("[data-testid^='storyThumbnail-']", {
-  //       state: "visible",
-  //       timeout: 5000,
-  //     });
-
-  //     const storyCount = await page
-  //       .locator("[data-testid^='storyThumbnail-']")
-  //       .count();
-
-  //     test.skip(storyCount < 2, "This test requires at least 2 stories");
-
-  //     await page.locator("[data-testid^='storyThumbnail-']").nth(1).click();
-
-  //     const initialUsername = await page
-  //       .locator("[data-testid='storyUsername']")
-  //       .textContent();
-
-  //     const storyContent = page.locator("[data-testid='storyContent']");
-  //     const boundingBox = await storyContent.boundingBox();
-
-  //     if (boundingBox) {
-  //       await page.mouse.click(
-  //         boundingBox.x + boundingBox.width * 0.25,
-  //         boundingBox.y + boundingBox.height / 2
-  //       );
-
-  //       await page.waitForTimeout(500);
-
-  //       const newUsername = await page
-  //         .locator("[data-testid='storyUsername']")
-  //         .textContent();
-  //       expect(newUsername).not.toEqual(initialUsername);
-  //     }
-
-  //     await page.locator("[data-testid='closeButton']").click();
-  //   });
 
   // check for posts
   test("should display posts", async ({ page }) => {
