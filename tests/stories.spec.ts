@@ -53,23 +53,6 @@ test.describe("Instagram Stories Clone", () => {
     await expect(storyViewer).not.toBeVisible();
   });
 
-  //   // check for progress bars
-  //   test("should show progress bars for all stories", async ({ page }) => {
-  //     await page.waitForSelector("[data-testid^='storyThumbnail-']", {
-  //       state: "visible",
-  //       timeout: 5000,
-  //     });
-  //     await page.locator("[data-testid^='storyThumbnail-']").first().click();
-
-  //     const progressBars = page.locator("[data-testid^='progressBar-']");
-
-  //     const storyCount = await page
-  //       .locator("[data-testid^='storyThumbnail-']")
-  //       .count();
-
-  //     await expect(progressBars).toHaveCount(storyCount);
-  //   });
-
   // check for navigation on right side click of any story
   test("should navigate to next story when clicking right side", async ({
     page,
@@ -151,6 +134,7 @@ test.describe("Instagram Stories Clone", () => {
     await page.locator("[data-testid='closeButton']").click();
   });
 
+  // check for auto progress to next story after 5 seconds
   test("should auto progress to next story after timeout (5 seconds)", async ({
     page,
   }) => {
