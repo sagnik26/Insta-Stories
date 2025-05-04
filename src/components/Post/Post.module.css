@@ -43,18 +43,6 @@
   padding: 8px;
 }
 
-.postImage {
-  width: 100%;
-  position: relative;
-  background-color: #fafafa;
-}
-
-.postImage img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
 .postActions {
   padding: 0 16px 16px;
 }
@@ -95,5 +83,163 @@
     border-left: none;
     border-right: none;
     border-radius: 0;
+  }
+}
+
+.loading {
+  min-height: 500px;
+  position: relative;
+  background-color: #fff;
+}
+
+.skeleton {
+  padding: 16px;
+  width: 100%;
+}
+
+.skeletonHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.skeletonAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonUsername {
+  width: 120px;
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonImage {
+  width: 100%;
+  padding-bottom: 100%;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 12px;
+}
+
+.skeletonActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeletonButtons {
+  height: 24px;
+  width: 120px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonText {
+  height: 16px;
+  width: 80%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.imageLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #dbdbdb;
+  border-top-color: #262626;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.postImage {
+  position: relative;
+  width: 100%;
+  background-color: #fafafa;
+}
+
+.postImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.postImage img.loaded {
+  opacity: 1;
+}
+
+.loaded {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .loading {
+    min-height: 400px;
+  }
+
+  .spinner {
+    width: 24px;
+    height: 24px;
   }
 }
